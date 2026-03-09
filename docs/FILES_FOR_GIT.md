@@ -20,6 +20,8 @@ Commit only these paths so the repo contains the pipeline and ML code, no data o
 - `scripts/inject_clusters_to_5filters.py`
 - `scripts/build_ml_inputs.py`
 - `scripts/plot_completeness_mag_mass_age.py`
+- `scripts/extract_white.py`
+- `scripts/README.md`
 
 ## Cluster pipeline package
 
@@ -63,8 +65,13 @@ Commit only these paths so the repo contains the pipeline and ML code, no data o
 ## Docs
 
 - `docs/RUNNING.md` – How to run: required files, commands, env vars
+- `docs/PIPELINE_FILES.md` – Input/output files per stage
+- `docs/SCRIPTS.md` – Script index and locations
 - `docs/DEPLOY_FOR_PAPER.md`
 - `docs/FILES_FOR_GIT.md`
+- `docs/ARCHITECTURE.md`
+- `docs/INSTALL_IRAF.md`
+- `docs/COMPLETENESS_FIGURE.md`
 
 ## CI
 

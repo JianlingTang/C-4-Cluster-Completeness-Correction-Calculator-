@@ -75,19 +75,18 @@ Outputs: best model, scalers, and plots under `--out-dir`. Dependencies: `torch`
 
 | Path | Description |
 |------|-------------|
-| `scripts/run_small_test.py` | Pipeline entry: cleanup, Phase A/B, plots |
-| `scripts/inject_clusters_to_5filters.py` | Inject matched clusters onto 5-filter science images |
-| `scripts/build_ml_inputs.py` | Build `det_3d.npy` + `allprop.npz` from pipeline outputs |
-| `scripts/plot_completeness_mag_mass_age.py` | Plot completeness vs mag/mass/age (synthetic demo) |
-| `cluster_pipeline/` | Config, data loaders, detection, matching, pipeline, photometry, catalogue, utils |
-| `generate_white_clusters.py` | White-light synthetic injection (Phase A) |
-| `perform_photometry_ci_cut_on_5filters.py` | Standalone photometry+CI reference (optional) |
-| `perform_ml_to_learn_completeness.py` | NN training script |
-| `nn_utils.py` | Plotting helpers for NN |
-| `docs/` | Deployment checklist and file list |
-| `tests/` | Unit, integration, and E2E tests |
+| **Root** | `generate_white_clusters.py` (Phase A), `perform_photometry_ci_cut_on_5filters.py`, `perform_ml_to_learn_completeness.py`, `nn_utils.py` |
+| **`scripts/`** | Pipeline runners, 5-filter injection, ML build, plotting, setup; see **`scripts/README.md`** and **`docs/SCRIPTS.md`** |
+| **`scripts/run_small_test.py`** | Pipeline entry: cleanup, Phase A/B, plots |
+| **`scripts/inject_clusters_to_5filters.py`** | Inject matched clusters onto 5-filter science images |
+| **`scripts/build_ml_inputs.py`** | Build `det_3d.npy` + `allprop.npz` from pipeline outputs |
+| **`scripts/plot_completeness_mag_mass_age.py`** | Plot completeness vs mag/mass/age (synthetic demo) |
+| **`scripts/extract_white.py`** | Legacy white extraction / batch processing |
+| **`cluster_pipeline/`** | Config, data loaders, detection, matching, pipeline, photometry, catalogue, utils |
+| **`docs/`** | RUNNING, PIPELINE_FILES, SCRIPTS (script index + inputs/outputs), FILES_FOR_GIT, DEPLOY, ARCHITECTURE, INSTALL_IRAF, COMPLETENESS_FIGURE |
+| **`tests/`** | Unit, integration, and E2E tests |
 
-Data (FITS, SLUG library, PSF, etc.) and large outputs are not in the repo; see `docs/DEPLOY_FOR_PAPER.md` and `docs/FILES_FOR_GIT.md`.
+Data (FITS, SLUG library, PSF, etc.) and large outputs are not in the repo; see `docs/DEPLOY_FOR_PAPER.md` and `docs/FILES_FOR_GIT.md`. **Input/output files per stage:** `docs/PIPELINE_FILES.md`.
 
 ## Tests and lint
 
@@ -104,8 +103,14 @@ CI runs on push/PR: `ruff check` and `pytest` (see `.github/workflows/ci.yml`).
 ## Documentation
 
 - **`docs/RUNNING.md`** – **How to run the pipeline**: required files and directories, step-by-step run commands, environment variables.
+- **`docs/PIPELINE_FILES.md`** – Input/output files per pipeline stage.
+- **`docs/SCRIPTS.md`** – Script index with inputs/outputs and locations.
 - **`docs/DEPLOY_FOR_PAPER.md`** – What to include for paper/GitHub: pipeline modules, ML step, optional reference script, exclude list.
 - **`docs/FILES_FOR_GIT.md`** – Explicit list of files to commit for a pipeline-only push.
+- **`docs/ARCHITECTURE.md`** – Pipeline architecture and refactor design.
+- **`docs/INSTALL_IRAF.md`** – Local IRAF install for 5-filter photometry.
+- **`docs/COMPLETENESS_FIGURE.md`** – Completeness workflow, scripts, and assumptions.
+- **`scripts/README.md`** – Script quick reference and pointers to docs.
 - **`tests/README.md`** – How to run tests and the completeness visualisation script.
 
 ## Pushing pipeline-only to GitHub
@@ -119,7 +124,7 @@ To push only the pipeline and ML code (no data or heavy outputs):
 git init
 git add .gitignore README.md pyproject.toml pytest.ini requirements.txt
 git add generate_white_clusters.py perform_photometry_ci_cut_on_5filters.py perform_ml_to_learn_completeness.py nn_utils.py
-git add scripts/run_small_test.py scripts/inject_clusters_to_5filters.py scripts/build_ml_inputs.py scripts/plot_completeness_mag_mass_age.py
+git add scripts/run_small_test.py scripts/inject_clusters_to_5filters.py scripts/build_ml_inputs.py scripts/plot_completeness_mag_mass_age.py scripts/extract_white.py scripts/README.md
 git add cluster_pipeline/
 git add docs/
 git add .github/

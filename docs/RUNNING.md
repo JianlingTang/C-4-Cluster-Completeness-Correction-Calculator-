@@ -120,7 +120,7 @@ Outputs: best model, scalers, and diagnostic plots under `--out-dir`. No IRAF/BA
 
 ## Standalone scripts (optional)
 
-- **`extract_white.py`** – Legacy white extraction / batch processing. Use `--directory` or `COMP_MAIN_DIR` for the run directory.
+- **`scripts/extract_white.py`** – Legacy white extraction / batch processing. Use `--directory` or `COMP_MAIN_DIR` for the run directory.
 - **`perform_photometry_ci_cut_on_5filters.py`** – Standalone photometry + CI reference; same logic as the pipeline’s photometry step.
 - **`scripts/plot_completeness_mag_mass_age.py`** – Plot completeness vs magnitude, mass, and age (synthetic demo).
 - **`scripts/sample_slug_white_mag.py`** – Sample SLUG clusters and compute white-light mag for BAOlab/`--input_coords`.
