@@ -182,7 +182,7 @@ def main():
     np.savez(out_npz, **allprop)
     print(f"Saved {out_det} shape {det_3d.shape}")
     print(f"Saved {out_npz} keys {list(allprop.keys())} lengths {[len(v) for k, v in allprop.items() if hasattr(v, '__len__')]}")
-    print(f"Run: python perform_ml_to_learn_completeness.py --det-path {out_det} --npz-path {out_npz} --clusters-per-frame {n_clusters} --nframes {nframe} --nreff {n_reff}")
+    print(f"Run: python scripts/perform_ml_to_learn_completeness.py --det-path {out_det} --npz-path {out_npz} --clusters-per-frame {n_clusters} --nframes {nframe} --nreff {n_reff}")
     if args.cleanup_after:
         print("Cleanup: removing pipeline outputs (including all .fits)...")
         cleanup_pipeline_outputs(main_dir, args.galaxy)

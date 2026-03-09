@@ -3,7 +3,7 @@
 重构后，**生成 white 合成图** 和 **detection / matching / dataset** 是两段：
 
 - **生成 white 合成图（SLUG → 白光 → BAOlab → FITS + coords）**  
-  仍在根目录的 **legacy 脚本** `generate_white_clusters.py` 里，**尚未迁入** `cluster_pipeline`。
+  仍在 **scripts/** 下的 **legacy 脚本** `generate_white_clusters.py` 里，**尚未迁入** `cluster_pipeline`。
 - **重构后的 pipeline**（`cluster_pipeline`）负责：在**已有** synthetic FITS 和 `white_position_*.txt` 的前提下，跑 detection → matching（以及可选的 photometry / catalogue / dataset），配置通过 **env + PipelineConfig**，入口是 **`run_galaxy_pipeline` / `run_ast_pipeline`**。
 
 下面分别说：**重构后怎么跑**、**legacy 脚本怎么跑**、**完整流程怎么串起来**。
@@ -183,7 +183,7 @@ plt.show()
 
 ## 二、Legacy 脚本：真正「生成 white clusters」（未重构进 cluster_pipeline）
 
-根目录的 **`generate_white_clusters.py`** 仍然负责：
+**scripts/** 下的 **`generate_white_clusters.py`** 仍然负责：
 
 - 读 SLUG 库、算白光、调用 BAOlab 生成 synthetic FITS；
 - 写出 `white_position_{frame}_{outname}_reff{reff}.txt` 等。
@@ -198,7 +198,7 @@ plt.show()
 ```bash
 cd /Users/janett/Documents/comp_pipeline_restructure
 
-python generate_white_clusters.py \
+python scripts/generate_white_clusters.py \
   --gal_name ngc628 \
   --directory /path/to/你的completeness目录 \
   --outname my_run
@@ -212,7 +212,7 @@ python generate_white_clusters.py \
 ## 四、完整流程：先 legacy 生成 white，再重构 pipeline 跑 detection/matching
 
 1. **用 legacy 脚本生成 synthetic FITS + white coords**  
-   运行 `generate_white_clusters.py`，使输出写到与 `COMP_MAIN_DIR` / `COMP_FITS_PATH` 一致的目录下（或把输出拷到 config 指向的 `main_dir` / `galaxy_id/white/` 等）。
+   运行 **scripts/generate_white_clusters.py**，使输出写到与 `COMP_MAIN_DIR` / `COMP_FITS_PATH` 一致的目录下（或把输出拷到 config 指向的 `main_dir` / `galaxy_id/white/` 等）。
 2. **设好环境变量**（或 `get_config(overrides=...)`），使 `synthetic_fits_dir`、`white_dir` 指向刚生成的文件所在位置。
 3. **用重构后的 pipeline** 跑 detection + matching：
    - `run_galaxy_pipeline(galaxy_id, config=config, run_injection=True, run_detection=True, run_matching=True)`  
@@ -247,7 +247,7 @@ bash scripts/setup_env.sh --quick
 
 **已移除的依赖**：
 - **slugpy**：不再需要安装。读取 SLUG 库 FITS 文件的逻辑已内置到 `cluster_pipeline.data.slug_reader`（纯 Python，用 astropy 直接读 FITS + 内嵌 HST 滤镜 Vega zeropoint 表）。不需要 GSL、不需要 C 编译。
-- **pyraf**：不再是必须依赖。`generate_white_clusters.py` 中的 FITS 算术已替换为纯 astropy 实现（`cluster_pipeline.utils.fits_arithmetic`）。仅在跑 stage 4（aperture photometry via IRAF daophot）时才需要 pyraf。
+- **pyraf**：不再是必须依赖。**scripts/generate_white_clusters.py** 中的 FITS 算术已替换为纯 astropy 实现（`cluster_pipeline.utils.fits_arithmetic`）。仅在跑 stage 4（aperture photometry via IRAF daophot）时才需要 pyraf。
 
 ### Makefile 快捷命令
 
@@ -267,7 +267,7 @@ bash scripts/setup_env.sh --quick
 | 问题 | 答案 |
 |------|------|
 | 重构了吗？ | 是。detection / matching / config / manifest / dataset 等都在 `cluster_pipeline` 里，用 config 驱动，无路径硬编码。 |
-| 「生成 white clusters」在哪儿？ | 仍在根目录的 **`generate_white_clusters.py`**，尚未迁入 `cluster_pipeline`。 |
+| 「生成 white clusters」在哪儿？ | 在 **`scripts/generate_white_clusters.py`**，尚未迁入 `cluster_pipeline`。 |
 | 重构后需要哪些文件、怎么调用？ | 需要**已有** synthetic FITS 和 `white_position_*.txt`；配置用 **env 或 get_config(overrides)**；Python 里调 **run_galaxy_pipeline** 或 **run_ast_pipeline**。 |
-| 要真实跑一遍「生成 white」？ | 运行 **`generate_white_clusters.py`**，准备好 directory 下的 npy 和 SLUG/FITS/PSF/BAOlab 路径（或改脚本里的硬编码路径）。 |
+| 要真实跑一遍「生成 white」？ | 运行 **`python scripts/generate_white_clusters.py`**，准备好 directory 下的 npy 和 SLUG/FITS/PSF/BAOlab 路径（或改脚本里的硬编码路径）。 |
 | 怎么装所有依赖？ | `make setup` 或 `bash scripts/setup_env.sh`，一条命令搞定。不需要装 slugpy / GSL / pyraf。 |

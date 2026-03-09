@@ -42,7 +42,8 @@ from cluster_pipeline.utils.fits_arithmetic import fits_add, fits_div
 # Set COMP_MAIN_DIR, COMP_FITS_PATH, COMP_PSF_PATH, COMP_BAO_PATH,
 # COMP_SLUG_LIB_DIR, COMP_OUTPUT_LIB_DIR for custom paths.
 # -----------------------------------------------------------------------------
-PROJECT_ROOT = Path(__file__).resolve().parent
+# Repo root (scripts/generate_white_clusters.py -> parent.parent)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def _path_from_env(env_key: str, default_path: Path) -> Path:

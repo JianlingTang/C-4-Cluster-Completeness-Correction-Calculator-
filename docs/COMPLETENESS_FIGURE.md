@@ -15,13 +15,13 @@
 | 脚本 | 作用 | 谁调用 |
 |------|------|--------|
 | **`scripts/run_small_test.py`** | 总入口：串起 Phase A → Phase B，可选 backfill + 画 completeness 图 | 用户直接运行 |
-| **`generate_white_clusters.py`** | Phase A：生成白光 synthetic 图、写 `white_position_*`、写 **physprop**（若未用 `--input_coords` 则从 SLUG 采样） | `run_small_test.run_phase_a()` 里 `subprocess.run(generate_white_clusters.py ...)` |
+| **`scripts/generate_white_clusters.py`** | Phase A：生成白光 synthetic 图、写 `white_position_*`、写 **physprop**（若未用 `--input_coords` 则从 SLUG 采样） | `run_small_test.run_phase_a()` 里 `subprocess.run(scripts/generate_white_clusters.py ...)` |
 | **`cluster_pipeline.pipeline.pipeline_runner.run_galaxy_pipeline`** | Phase B：用已有 white 图和 coords 做 detection → matching → 可选 photometry → catalogue，写 labels、match_summary、catalogue 等 | `run_small_test.run_phase_b()` |
 | **`run_small_test.backfill_physprop_from_white_coords()`** | 在**没有**由 generate_white_clusters 写出 physprop 时，用 `white_position_*` + 可选 input_coords 补写 physprop | `run_small_test` 在 `--plot_only` 或 `--run_photometry` 且 nframe>1 时调用 |
 | **`run_small_test.plot_completeness_diagnostics()`** | 读 labels + physprop，画 completeness vs mass / age / mag(5 bands) | `run_small_test` 在 plot_only 或 run_photometry 结束后调用 |
 | **`scripts/inject_clusters_to_5filters.py`** | 把 matched 星团（同坐标）按每 filter 星等 inject 到 HLSP 科学图，写出 `galaxy/filter/synthetic_fits/*.fits` | 由 pipeline（当 `inject_5filter_script` 已配置时）在每 frame matching 后、photometry 前调用 |
 
-没有单独跑 `perform_photometry_ci_cut_on_5filters.py` 或 `cluster_pipeline.pipeline.diagnostics.plot_completeness_diagnostics`；completeness 图只来自 **run_small_test** 里的 `plot_completeness_diagnostics()`。
+没有单独跑 `scripts/perform_photometry_ci_cut_on_5filters.py` 或 `cluster_pipeline.pipeline.diagnostics.plot_completeness_diagnostics`；completeness 图只来自 **run_small_test** 里的 `plot_completeness_diagnostics()`。
 
 ---
 
@@ -48,7 +48,7 @@ python scripts/run_small_test.py --nframe 1 --ncl 20
 python scripts/run_small_test.py --input_coords path/to/x_y_mag.txt --nframe 10
 ```
 
-- Phase A：`generate_white_clusters.py` → 生成 white 图、`white_position_*`、**physprop**（无 `--input_coords` 时由 SLUG 写；有 `--input_coords` 时由 generate_white_clusters 按该文件写，若 5 列则含 mass/age）。
+- Phase A：`scripts/generate_white_clusters.py` → 生成 white 图、`white_position_*`、**physprop**（无 `--input_coords` 时由 SLUG 写；有 `--input_coords` 时由 generate_white_clusters 按该文件写，若 5 列则含 mass/age）。
 - Phase B：`run_galaxy_pipeline(max_stage=3)` → 只做 detection + matching，写 `matched_coords`、`match_summary_*`、**white-match labels**（`detection_labels_white_match_*`），**不写** `detection_frame_*`（最终 photometry+CI 的 label）。
 - **不** backfill，**不**画图（除非你后面再单独加画图逻辑）。
 
@@ -94,7 +94,7 @@ python scripts/run_small_test.py --run_photometry --input_coords path/to/5col.tx
 
 ## 5. 总结：为什么图会“不对”
 
-1. **脚本链**：只用了 `run_small_test.py` → Phase A（generate_white_clusters）+ Phase B（run_galaxy_pipeline）+ 可选 backfill + `plot_completeness_diagnostics()`。没有用 perform_photometry_ci_cut_on_5filters 或 pipeline 里另一套 diagnostics 画图。
+1. **脚本链**：只用了 `run_small_test.py` → Phase A（scripts/generate_white_clusters.py）+ Phase B（run_galaxy_pipeline）+ 可选 backfill + `plot_completeness_diagnostics()`。没有用 scripts/perform_photometry_ci_cut_on_5filters 或 pipeline 里另一套 diagnostics 画图。
 2. **5 个 filter 的图**：要么是 backfill 把**白光 mag 复制 5 列**（5 张 mag 子图同一套 x），要么是 photometry 跑在**同一张 white 图复制到 5 个 filter** 上，横轴都不是“各 band 真实注入星等”，所以 completeness vs mag 不必、也往往不会呈标准 logistic。
 3. **mass/age**：nframe>1 且 backfill 用 500 行 input_coords 时，只有 frame 0 的 mass/age 与 labels 对齐，frame 1..9 的 mass/age 是重复的 500 行，**错位**。
 4. **Binning**：mag 已改为固定星等 bin + 按 x 排序，但若数据本身不对齐或横轴含义不是“真实 band 星等”，曲线形状仍会怪。

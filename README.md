@@ -53,12 +53,12 @@ python scripts/build_ml_inputs.py --main-dir . --galaxy ngc628-c --outname test 
   --out-det det_3d.npy --out-npz allprop.npz
 ```
 
-Use `--use-white-match` to use white-match detection labels (detection rate) instead of post–CI labels. The script prints the exact `perform_ml_to_learn_completeness.py` command to run next.
+Use `--use-white-match` to use white-match detection labels (detection rate) instead of post–CI labels. The script prints the exact `scripts/perform_ml_to_learn_completeness.py` command to run next.
 
 ### 3. Train the NN
 
 ```bash
-python perform_ml_to_learn_completeness.py \
+python scripts/perform_ml_to_learn_completeness.py \
   --det-path det_3d.npy \
   --npz-path allprop.npz \
   --out-dir ./nn_sweep_out \
@@ -75,13 +75,7 @@ Outputs: best model, scalers, and plots under `--out-dir`. Dependencies: `torch`
 
 | Path | Description |
 |------|-------------|
-| **Root** | `generate_white_clusters.py` (Phase A), `perform_photometry_ci_cut_on_5filters.py`, `perform_ml_to_learn_completeness.py`, `nn_utils.py` |
-| **`scripts/`** | Pipeline runners, 5-filter injection, ML build, plotting, setup; see **`scripts/README.md`** and **`docs/SCRIPTS.md`** |
-| **`scripts/run_small_test.py`** | Pipeline entry: cleanup, Phase A/B, plots |
-| **`scripts/inject_clusters_to_5filters.py`** | Inject matched clusters onto 5-filter science images |
-| **`scripts/build_ml_inputs.py`** | Build `det_3d.npy` + `allprop.npz` from pipeline outputs |
-| **`scripts/plot_completeness_mag_mass_age.py`** | Plot completeness vs mag/mass/age (synthetic demo) |
-| **`scripts/extract_white.py`** | Legacy white extraction / batch processing |
+| **`scripts/`** | All runnable scripts; see **`scripts/README.md`** and **`docs/SCRIPTS.md`**. Entry points: `run_small_test.py`, `generate_white_clusters.py`, `perform_photometry_ci_cut_on_5filters.py`, `perform_ml_to_learn_completeness.py`, `nn_utils.py`, `inject_clusters_to_5filters.py`, `build_ml_inputs.py`, `plot_completeness_mag_mass_age.py`, `extract_white.py`, etc. |
 | **`cluster_pipeline/`** | Config, data loaders, detection, matching, pipeline, photometry, catalogue, utils |
 | **`docs/`** | RUNNING, PIPELINE_FILES, SCRIPTS (script index + inputs/outputs), FILES_FOR_GIT, DEPLOY, ARCHITECTURE, INSTALL_IRAF, COMPLETENESS_FIGURE |
 | **`tests/`** | Unit, integration, and E2E tests |
@@ -123,8 +117,8 @@ To push only the pipeline and ML code (no data or heavy outputs):
 ```bash
 git init
 git add .gitignore README.md pyproject.toml pytest.ini requirements.txt
-git add generate_white_clusters.py perform_photometry_ci_cut_on_5filters.py perform_ml_to_learn_completeness.py nn_utils.py
-git add scripts/run_small_test.py scripts/inject_clusters_to_5filters.py scripts/build_ml_inputs.py scripts/plot_completeness_mag_mass_age.py scripts/extract_white.py scripts/README.md
+git add scripts/
+git add cluster_pipeline/
 git add cluster_pipeline/
 git add docs/
 git add .github/

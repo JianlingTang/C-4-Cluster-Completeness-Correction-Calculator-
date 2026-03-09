@@ -89,7 +89,7 @@ def run_phase_a(input_coords: str = None, ncl: int = NCL, nframe: int = NFRAME, 
     print("=" * 60)
 
     cmd = [
-        PYTHON, str(ROOT / "generate_white_clusters.py"),
+        PYTHON, str(ROOT / "scripts" / "generate_white_clusters.py"),
         "--ncl", str(ncl),
         "--nframe", str(nframe),
         "--eradius_list",

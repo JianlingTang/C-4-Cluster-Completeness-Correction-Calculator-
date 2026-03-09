@@ -70,7 +70,7 @@ python scripts/run_small_test.py --cleanup --nframe 2 --reff_list "1,3,6,10"
 - `--nframe`: Number of frames to simulate.
 - `--reff_list`: Comma-separated effective radii in pc (e.g. `"1,3,6,10"`).
 
-This runs **Phase A** (white-light injection via `generate_white_clusters.py`) and **Phase B** (detection with SExtractor, coordinate matching). Outputs go to `ngc628-c/white/` (synthetic_fits, matched_coords, detection_labels, etc.) and `physprop/`.
+This runs **Phase A** (white-light injection via `scripts/generate_white_clusters.py`) and **Phase B** (detection with SExtractor, coordinate matching). Outputs go to `ngc628-c/white/` (synthetic_fits, matched_coords, detection_labels, etc.) and `physprop/`.
 
 ### 2. With 5-filter photometry and CI cut
 
@@ -98,12 +98,12 @@ python scripts/build_ml_inputs.py --main-dir . --galaxy ngc628-c --outname test 
   --out-det det_3d.npy --out-npz allprop.npz
 ```
 
-Use `--use-white-match` to build labels from white-match detection (detection rate) instead of post–CI labels. The script prints the suggested `perform_ml_to_learn_completeness.py` command.
+Use `--use-white-match` to build labels from white-match detection (detection rate) instead of post–CI labels. The script prints the suggested `scripts/perform_ml_to_learn_completeness.py` command.
 
 ### 5. Train the completeness NN
 
 ```bash
-python perform_ml_to_learn_completeness.py \
+python scripts/perform_ml_to_learn_completeness.py \
   --det-path det_3d.npy \
   --npz-path allprop.npz \
   --out-dir ./nn_sweep_out \
@@ -121,7 +121,7 @@ Outputs: best model, scalers, and diagnostic plots under `--out-dir`. No IRAF/BA
 ## Standalone scripts (optional)
 
 - **`scripts/extract_white.py`** – Legacy white extraction / batch processing. Use `--directory` or `COMP_MAIN_DIR` for the run directory.
-- **`perform_photometry_ci_cut_on_5filters.py`** – Standalone photometry + CI reference; same logic as the pipeline’s photometry step.
+- **`scripts/perform_photometry_ci_cut_on_5filters.py`** – Standalone photometry + CI reference; same logic as the pipeline’s photometry step.
 - **`scripts/plot_completeness_mag_mass_age.py`** – Plot completeness vs magnitude, mass, and age (synthetic demo).
 - **`scripts/sample_slug_white_mag.py`** – Sample SLUG clusters and compute white-light mag for BAOlab/`--input_coords`.
 

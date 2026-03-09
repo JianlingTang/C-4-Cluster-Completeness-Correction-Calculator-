@@ -1,6 +1,6 @@
 # Code to Include for Paper / GitHub Deployment
 
-This document lists the code needed to run the **completeness pipeline** (synthetic injection → detection → matching → 5-filter photometry → CI cut) and the final **NN training** step (`perform_ml_to_learn_completeness.py`).
+This document lists the code needed to run the **completeness pipeline** (synthetic injection → detection → matching → 5-filter photometry → CI cut) and the final **NN training** step (`scripts/perform_ml_to_learn_completeness.py`).
 
 ---
 
@@ -13,7 +13,7 @@ This document lists the code needed to run the **completeness pipeline** (synthe
 
 | Include | Purpose |
 |--------|---------|
-| `generate_white_clusters.py` | Injects synthetic clusters on white-light image; writes coord files, synthetic FITS, physprop .npy. |
+| `scripts/generate_white_clusters.py` | Injects synthetic clusters on white-light image; writes coord files, synthetic FITS, physprop .npy. |
 | `cluster_pipeline/data/slug_reader.py` | Reads SLUG library (mass, age, photometry). |
 | `cluster_pipeline/data/cluster_library.py` | Cluster library interface. |
 | `cluster_pipeline/data/slug_library_loader.py` | SLUG library loading. |
@@ -59,13 +59,13 @@ This document lists the code needed to run the **completeness pipeline** (synthe
 | `cluster_pipeline/utils/__init__.py` | |
 
 **Optional reference (same logic as pipeline):**  
-`perform_photometry_ci_cut_on_5filters.py` – standalone photometry+CI script; pipeline uses `cluster_pipeline` + inject script instead, but you can include it as the “source of truth” for aperture/CI/readme parsing.
+`perform_photometry_ci_cut_on_5filters.py` – standalone photometry+CI script (in `scripts/`); pipeline uses `cluster_pipeline` + inject script instead, but you can include it as the “source of truth” for aperture/CI/readme parsing.
 
 ---
 
 ## 2. Build ML inputs from pipeline outputs
 
-`perform_ml_to_learn_completeness.py` expects:
+`scripts/perform_ml_to_learn_completeness.py` expects:
 
 - **`--det-path`**: 3D array shape `(n_clusters, n_frames, n_reff)` – detection labels (0/1) per cluster, frame, reff.
 - **`--npz-path`**: `.npz` (or `.npz.npy` loaded with `allow_pickle=True`) containing dict:
@@ -91,7 +91,7 @@ python scripts/build_ml_inputs.py --main-dir . --galaxy ngc628-c --outname test 
   --out-det det_3d.npy --out-npz allprop.npz
 ```
 
-Use `--use-white-match` to build labels from white-match detection (detection rate) instead of final post–CI labels. The script prints the exact `perform_ml_to_learn_completeness.py` command to run next.
+Use `--use-white-match` to build labels from white-match detection (detection rate) instead of final post–CI labels. The script prints the exact `scripts/perform_ml_to_learn_completeness.py` command to run next.
 
 ---
 
@@ -99,13 +99,13 @@ Use `--use-white-match` to build labels from white-match detection (detection ra
 
 | Include | Purpose |
 |--------|---------|
-| `perform_ml_to_learn_completeness.py` | Loads det 3D + npz; optional drop-frame; sweep + train MLP (phys and phot features); saves best model, scalers, plots. |
-| `nn_utils.py` | `plot_train_val_loss`, `scatter_param_vs_val`, `plot_lr_wd_grid` for figures. |
+| `scripts/perform_ml_to_learn_completeness.py` | Loads det 3D + npz; optional drop-frame; sweep + train MLP (phys and phot features); saves best model, scalers, plots. |
+| `scripts/nn_utils.py` | `plot_train_val_loss`, `scatter_param_vs_val`, `plot_lr_wd_grid` for figures. |
 
 **CLI example:**
 
 ```bash
-python perform_ml_to_learn_completeness.py \
+python scripts/perform_ml_to_learn_completeness.py \
   --det-path /path/to/det_3d.npy \
   --npz-path /path/to/allprop.npz \
   --out-dir ./nn_sweep_out \
@@ -134,10 +134,14 @@ your-repo/
 │   ├── inject_clusters_to_5filters.py
 │   └── build_ml_inputs.py    # pipeline outputs → det_3d + allprop.npz
 ├── cluster_pipeline/        # full package as above
-├── generate_white_clusters.py
-├── perform_photometry_ci_cut_on_5filters.py   # optional reference
-├── perform_ml_to_learn_completeness.py
-├── nn_utils.py
+├── scripts/
+│   ├── generate_white_clusters.py
+│   ├── perform_photometry_ci_cut_on_5filters.py   # optional reference
+│   ├── perform_ml_to_learn_completeness.py
+│   ├── nn_utils.py
+│   ├── run_small_test.py
+│   ├── inject_clusters_to_5filters.py
+│   └── ...
 └── tests/                    # optional
 ```
 
@@ -148,16 +152,16 @@ your-repo/
 (1) Environment (Python, IRAF/PyRAF, SExtractor, BAOlab).  
 (2) Data: galaxy FITS, `galaxy_filter_dict.npy`, readme, SLUG library, PSF.  
 (3) Run pipeline: `python scripts/run_small_test.py --cleanup --nframe N --reff_list "1,3,..." [--run_photometry]`.  
-(4) Build ML inputs: `python scripts/build_ml_inputs.py --main-dir . --galaxy ... --outname ... --nframe N --reff-list 1 3 ...` (optionally `--use-white-match`); then run the printed `perform_ml_to_learn_completeness.py` command.  
-(5) Train NN: `python perform_ml_to_learn_completeness.py --det-path ... --npz-path ...`.
+(4) Build ML inputs: `python scripts/build_ml_inputs.py --main-dir . --galaxy ... --outname ... --nframe N --reff-list 1 3 ...` (optionally `--use-white-match`); then run the printed `scripts/perform_ml_to_learn_completeness.py` command.  
+(5) Train NN: `python scripts/perform_ml_to_learn_completeness.py --det-path ... --npz-path ...`.
 
 ---
 
 ## 5. Summary checklist
 
-- [ ] **Pipeline:** `cluster_pipeline/` (config, data, detection, matching, pipeline, photometry, catalogue, utils), `generate_white_clusters.py`, `scripts/run_small_test.py`, `scripts/inject_clusters_to_5filters.py`.
-- [ ] **Reference:** `perform_photometry_ci_cut_on_5filters.py` (optional).
+- [ ] **Pipeline:** `cluster_pipeline/` (config, data, detection, matching, pipeline, photometry, catalogue, utils), `scripts/generate_white_clusters.py`, `scripts/run_small_test.py`, `scripts/inject_clusters_to_5filters.py`.
+- [ ] **Reference:** `scripts/perform_photometry_ci_cut_on_5filters.py` (optional).
 - [ ] **ML inputs:** `scripts/build_ml_inputs.py` builds `det_3d.npy` + `allprop.npz` from pipeline outputs (CFR order).
-- [ ] **NN:** `perform_ml_to_learn_completeness.py`, `nn_utils.py`.
+- [ ] **NN:** `scripts/perform_ml_to_learn_completeness.py`, `scripts/nn_utils.py`.
 - [ ] **Docs:** README (env, data, run order), this deploy list.
 - [ ] **Exclude:** venv, big data, generated outputs.

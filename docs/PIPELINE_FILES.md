@@ -8,7 +8,7 @@ This document lists the **files and directories** the pipeline reads or writes f
 
 | Stage | Name        | Script / module |
 |-------|-------------|------------------|
-| 0 (Phase A) | White injection | `generate_white_clusters.py` |
+| 0 (Phase A) | White injection | `scripts/generate_white_clusters.py` |
 | 1 | Injection (copy frame+coords) | `pipeline_runner.py` |
 | 2 | Detection | SExtractor via `sextractor_runner.py` |
 | 3 | Matching | `coordinate_matcher.py`, `pipeline_runner.py` |
@@ -18,7 +18,7 @@ This document lists the **files and directories** the pipeline reads or writes f
 
 ---
 
-## Phase A: White-light injection (`generate_white_clusters.py`)
+## Phase A: White-light injection (`scripts/generate_white_clusters.py`)
 
 **Inputs**
 

@@ -17,7 +17,7 @@ jobs:
       - name: Install ruff
         run: pip install ruff
       - name: Lint
-        run: ruff check cluster_pipeline scripts tests perform_ml_to_learn_completeness.py nn_utils.py
+        run: ruff check cluster_pipeline scripts tests
 
   test:
     runs-on: ubuntu-latest

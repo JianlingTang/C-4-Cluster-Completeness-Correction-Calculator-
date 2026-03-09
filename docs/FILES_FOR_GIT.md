@@ -9,14 +9,14 @@ Commit only these paths so the repo contains the pipeline and ML code, no data o
 - `pytest.ini`
 - `requirements.txt`
 - `.gitignore`
-- `generate_white_clusters.py`
-- `perform_photometry_ci_cut_on_5filters.py`
-- `perform_ml_to_learn_completeness.py`
-- `nn_utils.py`
 
 ## Scripts
 
 - `scripts/run_small_test.py`
+- `scripts/generate_white_clusters.py`
+- `scripts/perform_photometry_ci_cut_on_5filters.py`
+- `scripts/perform_ml_to_learn_completeness.py`
+- `scripts/nn_utils.py`
 - `scripts/inject_clusters_to_5filters.py`
 - `scripts/build_ml_inputs.py`
 - `scripts/plot_completeness_mag_mass_age.py`
