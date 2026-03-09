@@ -10,8 +10,8 @@ Phase B: Run refactored pipeline stages 2–3 (detection + matching), optionally
   frames, not on white synthetic images.
 
 Usage:
-    python scripts/run_small_test.py                         # SLUG-sampled positions
-    python scripts/run_small_test.py --input_coords FILE     # user-supplied positions
+    python scripts/run_pipeline.py                         # SLUG-sampled positions
+    python scripts/run_pipeline.py --input_coords FILE     # user-supplied positions
 """
 import argparse
 import subprocess

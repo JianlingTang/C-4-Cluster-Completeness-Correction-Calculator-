@@ -46,13 +46,13 @@ def test_plot_completeness_diagnostics_empty_dir(tmp_path):
     not os.environ.get("RUN_PIPELINE_E2E"),
     reason="Set RUN_PIPELINE_E2E=1 to run full E2E (requires data)",
 )
-def test_run_small_test_plot_only():
-    """Run run_small_test --plot_only (backfill + plot) if pipeline outputs exist."""
+def test_run_pipeline_plot_only():
+    """Run run_pipeline --plot_only (backfill + plot) if pipeline outputs exist."""
     import subprocess
     result = subprocess.run(
         [
             sys.executable,
-            str(ROOT / "scripts" / "run_small_test.py"),
+            str(ROOT / "scripts" / "run_pipeline.py"),
             "--plot_only",
             "--nframe", "1",
             "--reff_list", "1",

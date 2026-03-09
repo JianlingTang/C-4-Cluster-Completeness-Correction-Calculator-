@@ -12,7 +12,7 @@ Where each script lives, what it does, and where to find **inputs/outputs**.
 | Location | Contents |
 |----------|----------|
 | **Root** | Config only: README.md, pyproject.toml, pytest.ini, requirements.txt, .gitignore (no Python entry scripts) |
-| **`scripts/`** | All entry points and helpers: run_small_test.py, generate_white_clusters.py, perform_photometry_ci_cut_on_5filters.py, perform_ml_to_learn_completeness.py, nn_utils.py, inject_clusters_to_5filters.py, build_ml_inputs.py, plot_completeness_mag_mass_age.py, extract_white.py, etc. |
+| **`scripts/`** | All entry points and helpers: run_pipeline.py, generate_white_clusters.py, perform_photometry_ci_cut_on_5filters.py, perform_ml_to_learn_completeness.py, nn_utils.py, inject_clusters_to_5filters.py, build_ml_inputs.py, plot_completeness_mag_mass_age.py, extract_white.py, etc. |
 | **`cluster_pipeline/`** | Package: config, data, detection, matching, pipeline, photometry, catalogue, dataset, utils |
 | **`docs/`** | RUNNING, PIPELINE_FILES, SCRIPTS (this file), FILES_FOR_GIT, DEPLOY, ARCHITECTURE, INSTALL_IRAF, COMPLETENESS_FIGURE |
 | **`tests/`** | unit/, integration/, e2e/ |
@@ -25,8 +25,8 @@ Where each script lives, what it does, and where to find **inputs/outputs**.
 
 | Script | Purpose | Inputs | Outputs |
 |--------|---------|--------|---------|
-| **`scripts/run_small_test.py`** | Main entry: Phase A (white injection) + Phase B (detection, matching, optional photometry + catalogue), optional plots | See RUNNING.md; uses `--directory`, galaxy dirs, SExtractor config, etc. | `ngc628-c/white/`, `physprop/`, per-filter dirs; see PIPELINE_FILES.md |
-| **`scripts/run_full_with_iraf.sh`** | Wraps `run_small_test.py` with IRAF env for full photometry run | Same as run_small_test + IRAF installed | Same + photometry outputs |
+| **`scripts/run_pipeline.py`** | Main entry: Phase A (white injection) + Phase B (detection, matching, optional photometry + catalogue), optional plots | See RUNNING.md; uses `--directory`, galaxy dirs, SExtractor config, etc. | `ngc628-c/white/`, `physprop/`, per-filter dirs; see PIPELINE_FILES.md |
+| **`scripts/run_full_with_iraf.sh`** | Wraps `run_pipeline.py` with IRAF env for full photometry run | Same as run_pipeline + IRAF installed | Same + photometry outputs |
 | **`scripts/run_stage123_and_plot_diagnostics.py`** | Run stages 1–3 only, then plot completeness vs magnitude | Config + existing or generated synthetic_fits + white_position_*.txt | Match summaries, diagnostics plot |
 
 ### White injection and 5-filter

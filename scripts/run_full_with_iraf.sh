@@ -27,4 +27,4 @@ NFRAME=2
 
 # IRAF phot prompts for coords/output; feed newlines so it accepts defaults (non-interactive)
 # 500 clusters × 2 frames = 1000 prompts
-( for _ in $(seq 1 $((NCL * NFRAME))); do echo; done ) | "$PYTHON" scripts/run_small_test.py --ncl "$NCL" --nframe "$NFRAME" --run_photometry
+( for _ in $(seq 1 $((NCL * NFRAME))); do echo; done ) | "$PYTHON" scripts/run_pipeline.py --ncl "$NCL" --nframe "$NFRAME" --run_photometry

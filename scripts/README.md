@@ -1,17 +1,17 @@
 # Scripts
 
-Runnable scripts for the cluster completeness pipeline. All paths assume you are in the **repo root** when running (e.g. `python scripts/run_small_test.py`).
+Runnable scripts for the cluster completeness pipeline. All paths assume you are in the **repo root** when running (e.g. `python scripts/run_pipeline.py`).
 
 ## Quick reference
 
 | Script | Purpose |
 |--------|---------|
-| **run_small_test.py** | Main entry: Phase A + Phase B (detection, matching, optional photometry), optional plots |
-| **generate_white_clusters.py** | Phase A white injection (SLUG → synthetic FITS + physprop). Called by run_small_test.py. |
+| **run_pipeline.py** | Main entry: Phase A + Phase B (detection, matching, optional photometry), optional plots |
+| **generate_white_clusters.py** | Phase A white injection (SLUG → synthetic FITS + physprop). Called by run_pipeline.py. |
 | **perform_photometry_ci_cut_on_5filters.py** | Standalone photometry + CI reference |
 | **perform_ml_to_learn_completeness.py** | NN training (uses det_3d.npy, allprop.npz from build_ml_inputs.py) |
 | **nn_utils.py** | Plotting helpers for NN (used by perform_ml_to_learn_completeness.py) |
-| **run_full_with_iraf.sh** | Same as run_small_test with IRAF env for full 5-filter photometry |
+| **run_full_with_iraf.sh** | Same as run_pipeline with IRAF env for full 5-filter photometry |
 | **run_stage123_and_plot_diagnostics.py** | Run stages 1–3 only, then plot completeness vs magnitude |
 | **inject_clusters_to_5filters.py** | Inject matched clusters onto 5-filter HLSP images (called by pipeline when run_photometry) |
 | **build_ml_inputs.py** | Build det_3d.npy and allprop.npz from pipeline outputs for NN training |

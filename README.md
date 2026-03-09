@@ -32,10 +32,10 @@ See **`docs/RUNNING.md`** for the full list of required files and step-by-step r
 
 ### 1. Run the pipeline
 
-Entry point: `scripts/run_small_test.py`. It runs cleanup (optional), Phase A (white injection), Phase B (detection, matching, optional 5-filter inject + photometry + catalogue), and optional completeness plots.
+Entry point: `scripts/run_pipeline.py`. It runs cleanup (optional), Phase A (white injection), Phase B (detection, matching, optional 5-filter inject + photometry + catalogue), and optional completeness plots.
 
 ```bash
-python scripts/run_small_test.py --cleanup --nframe 2 --reff_list "1,3,6,10" --run_photometry
+python scripts/run_pipeline.py --cleanup --nframe 2 --reff_list "1,3,6,10" --run_photometry
 ```
 
 - `--cleanup`: Remove previous pipeline outputs before running.
@@ -75,7 +75,7 @@ Outputs: best model, scalers, and plots under `--out-dir`. Dependencies: `torch`
 
 | Path | Description |
 |------|-------------|
-| **`scripts/`** | All runnable scripts; see **`scripts/README.md`** and **`docs/SCRIPTS.md`**. Entry points: `run_small_test.py`, `generate_white_clusters.py`, `perform_photometry_ci_cut_on_5filters.py`, `perform_ml_to_learn_completeness.py`, `nn_utils.py`, `inject_clusters_to_5filters.py`, `build_ml_inputs.py`, `plot_completeness_mag_mass_age.py`, `extract_white.py`, etc. |
+| **`scripts/`** | All runnable scripts; see **`scripts/README.md`** and **`docs/SCRIPTS.md`**. Entry points: `run_pipeline.py`, `generate_white_clusters.py`, `perform_photometry_ci_cut_on_5filters.py`, `perform_ml_to_learn_completeness.py`, `nn_utils.py`, `inject_clusters_to_5filters.py`, `build_ml_inputs.py`, `plot_completeness_mag_mass_age.py`, `extract_white.py`, etc. |
 | **`cluster_pipeline/`** | Config, data loaders, detection, matching, pipeline, photometry, catalogue, utils |
 | **`docs/`** | RUNNING, PIPELINE_FILES, SCRIPTS (script index + inputs/outputs), FILES_FOR_GIT, DEPLOY, ARCHITECTURE, INSTALL_IRAF, COMPLETENESS_FIGURE |
 | **`tests/`** | Unit, integration, and E2E tests |

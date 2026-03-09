@@ -63,7 +63,7 @@ All commands assume the project root is the current working directory and the Py
 ### 1. Full pipeline (injection + detection + matching)
 
 ```bash
-python scripts/run_small_test.py --cleanup --nframe 2 --reff_list "1,3,6,10"
+python scripts/run_pipeline.py --cleanup --nframe 2 --reff_list "1,3,6,10"
 ```
 
 - `--cleanup`: Remove previous pipeline outputs before running.
@@ -75,7 +75,7 @@ This runs **Phase A** (white-light injection via `scripts/generate_white_cluster
 ### 2. With 5-filter photometry and CI cut
 
 ```bash
-python scripts/run_small_test.py --cleanup --nframe 2 --reff_list "1,3,6,10" --run_photometry
+python scripts/run_pipeline.py --cleanup --nframe 2 --reff_list "1,3,6,10" --run_photometry
 ```
 
 Requires per-filter science FITS and BAOlab. Matched clusters are injected onto 5-filter images, then aperture photometry and CI cut are run; final detection labels and catalogue parquet are written.
@@ -83,7 +83,7 @@ Requires per-filter science FITS and BAOlab. Matched clusters are injected onto 
 ### 3. Using pre-defined coordinates (no SLUG sampling)
 
 ```bash
-python scripts/run_small_test.py --input_coords path/to/coords.txt --nframe 1 --reff_list "3"
+python scripts/run_pipeline.py --input_coords path/to/coords.txt --nframe 1 --reff_list "3"
 ```
 
 `coords.txt` format: one line per cluster, `x y mag` (optionally `x y mag mass age` for 5 columns). Clusters are injected at these positions with the given white mag.

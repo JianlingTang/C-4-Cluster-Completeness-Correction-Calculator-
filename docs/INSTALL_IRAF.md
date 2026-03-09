@@ -28,7 +28,7 @@ chmod +x scripts/run_full_with_iraf.sh
 That script sets `IRAF=/usr/local/lib/iraf` and runs:
 
 ```bash
-python scripts/run_small_test.py --input_coords ngc628-c/white/input_coords_500.txt --run_photometry
+python scripts/run_pipeline.py --input_coords ngc628-c/white/input_coords_500.txt --run_photometry
 ```
 
 This runs: Phase A injection, 5-filter frame setup, Phase B (detection + matching + 5-filter photometry + CI cut), then writes `detection_*.npy` and completeness diagnostics.
@@ -38,5 +38,5 @@ This runs: Phase A injection, 5-filter frame setup, Phase B (detection + matchin
 You can run the same command without IRAF installed; photometry will be skipped and you will only get white-match labels and diagnostics:
 
 ```bash
-.venv/bin/python scripts/run_small_test.py --input_coords ngc628-c/white/input_coords_500.txt --run_photometry
+.venv/bin/python scripts/run_pipeline.py --input_coords ngc628-c/white/input_coords_500.txt --run_photometry
 ```

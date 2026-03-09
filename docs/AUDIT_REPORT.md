@@ -8,7 +8,7 @@
 
 ## 1. Audit summary
 
-- **Entry points:** `scripts/run_small_test.py` (main), `scripts/run_stage123_and_plot_diagnostics.py`, `scripts/generate_white_clusters.py`, `scripts/build_ml_inputs.py`, `scripts/perform_ml_to_learn_completeness.py`, `scripts/plot_completeness_mag_mass_age.py`, `scripts/inject_clusters_to_5filters.py`, `scripts/perform_photometry_ci_cut_on_5filters.py` (standalone reference), `scripts/extract_white.py`, `scripts/sample_slug_white_mag.py`, `scripts/setup_env.sh`, `scripts/generate_x11_stubs.py`.
+- **Entry points:** `scripts/run_pipeline.py` (main), `scripts/run_stage123_and_plot_diagnostics.py`, `scripts/generate_white_clusters.py`, `scripts/build_ml_inputs.py`, `scripts/perform_ml_to_learn_completeness.py`, `scripts/plot_completeness_mag_mass_age.py`, `scripts/inject_clusters_to_5filters.py`, `scripts/perform_photometry_ci_cut_on_5filters.py` (standalone reference), `scripts/extract_white.py`, `scripts/sample_slug_white_mag.py`, `scripts/setup_env.sh`, `scripts/generate_x11_stubs.py`.
 - **Pipeline package:** `cluster_pipeline/` — config, data (models, schemas, slug_reader, galaxy_metadata, cluster_library, slug_library_loader), detection (SExtractor), matching (coordinate_matcher), pipeline (pipeline_runner, ast_pipeline, stages, injection_5filter, diagnostics, manifest), photometry (aperture_photometry, ci_filter), catalogue (catalogue_filters, label_builder), dataset (dataset_builder), utils (filesystem, fits_arithmetic, logging_utils, mag_parser).
 - **Tests:** Root-level `tests/test_*.py` and `tests/unit/`, `tests/integration/`, `tests/e2e/` with some overlapping coverage (e.g. coordinate_matcher, label_builder) but different style (root = class-based + fixtures, unit = function-based). Both kept; no duplication removed to avoid changing behaviour.
 - **Issue found and fixed:** Root-level tests referenced fixtures (`sample_injected_coords`, `sample_detected_coords`, `sample_coords_three_col`, `sample_cluster_ids`, `sample_photometry_parquet`, `sample_injected_parquet`, `sample_match_parquet`, `sample_catalogue_parquet`) that were not defined in `conftest.py`, causing **10+ test collection/setup errors**. These fixtures were added to `tests/conftest.py` so all root-level tests run.
@@ -18,7 +18,7 @@
 ## 2. Duplicated code found
 
 - **Tests:** `tests/test_coordinate_matcher.py` and `tests/unit/test_coordinate_matcher.py` both test `match_coordinates`, `load_coords`, and `CoordinateMatcher`; `tests/test_label_builder.py` and `tests/unit/test_label_builder.py` both test `build_final_detection` and `save_final_detection`. Intentionally not consolidated: root tests use shared fixtures and class-based layout; unit tests are smaller and more isolated. Both layers are retained.
-- **Pipeline entry points:** `run_galaxy_pipeline` (pipeline_runner) is the main path used by `run_small_test.py`; `run_ast_pipeline` (ast_pipeline) is exported and may be used by HPC or external workflows. No consolidation or removal.
+- **Pipeline entry points:** `run_galaxy_pipeline` (pipeline_runner) is the main path used by `run_pipeline.py`; `run_ast_pipeline` (ast_pipeline) is exported and may be used by HPC or external workflows. No consolidation or removal.
 - **`load_coords` vs `load_coords_white_position`:** Both in `coordinate_matcher.py`; different formats (generic x y [mag] vs white_position y x mag). No duplication to remove.
 - **`slug_library_loader.py`:** Re-exports `load_slug_library` from `cluster_library.py`. No other code imports `slug_library_loader`; only `cluster_library.load_slug_library` exists. Kept as a documented alias for refactor/spec compatibility; not removed.
 
@@ -55,7 +55,7 @@
 ```
 
 - **Passed:** 111.  
-- **Skipped:** 1 (e.g. `test_run_small_test_plot_only` or similar conditional/slow test).  
+- **Skipped:** 1 (e.g. `test_run_pipeline_plot_only` or similar conditional/slow test).  
 - **Failed:** 0.  
 - **Errors:** 0 (after adding the missing fixtures to `conftest.py`).
 

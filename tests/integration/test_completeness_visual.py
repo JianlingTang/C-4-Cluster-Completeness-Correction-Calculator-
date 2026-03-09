@@ -13,7 +13,7 @@ from cluster_pipeline.pipeline.diagnostics import completeness_per_bin
 
 
 def binned_completeness_percentile(x, y_det, n_bins=15):
-    """Same binning as run_small_test: percentile-based bins, return centers, comp, counts."""
+    """Same binning as run_pipeline: percentile-based bins, return centers, comp, counts."""
     ok = np.isfinite(x)
     x_ok, y_ok = x[ok], y_det[ok]
     if len(x_ok) < 2:
