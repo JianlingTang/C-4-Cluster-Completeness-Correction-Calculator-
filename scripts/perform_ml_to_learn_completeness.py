@@ -14,10 +14,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from nn_utils import plot_lr_wd_grid, plot_train_val_loss, scatter_param_vs_val
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import StandardScaler
-
-from nn_utils import plot_lr_wd_grid, plot_train_val_loss, scatter_param_vs_val
 
 # ---- CONFIG ---
 SEED = 42

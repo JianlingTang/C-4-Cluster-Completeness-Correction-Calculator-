@@ -17,7 +17,6 @@ from pathlib import Path
 import astropy.io.fits as pyfits
 import astropy.units as u
 import numpy as np
-from astropy.coordinates import Distance
 from astropy.io import fits
 
 # Repo root (scripts/extract_white.py -> parent.parent)
