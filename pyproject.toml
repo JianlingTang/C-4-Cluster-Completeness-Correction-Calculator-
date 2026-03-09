@@ -1,0 +1,24 @@
+[project]
+name = "cluster-completeness-pipeline"
+version = "0.1.0"
+description = "Synthetic cluster injection, detection, matching, photometry, and NN completeness pipeline"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+exclude = [".venv", ".deps", "__pycache__", "build", "dist", ".git", "*.ipynb", "Save_detections", "Save_detections_training_set"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501", "N806", "N815", "N816", "N803", "F403", "F405", "F841", "F401", "F821", "E402", "E741"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"scripts/*" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/integration", "tests/e2e"]
+addopts = "-v --tb=short"
+filterwarnings = ["ignore::UserWarning", "ignore::DeprecationWarning", "ignore::RuntimeWarning"]
