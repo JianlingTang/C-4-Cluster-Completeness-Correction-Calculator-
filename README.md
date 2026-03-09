@@ -132,31 +132,6 @@ CI runs on push/PR: `ruff check` and `pytest` (see `.github/workflows/ci.yml`).
 - **`scripts/README.md`** – Script quick reference and pointers to docs.
 - **`tests/README.md`** – How to run tests and the completeness visualisation script.
 
-## Pushing pipeline-only to GitHub
-
-To push only the pipeline and ML code (no data or heavy outputs):
-
-1. Ensure `.gitignore` is in place (it excludes `.venv/`, `.deps/`, `*.npy`, `*.npz`, `*.fits`, pipeline output dirs, etc.).
-2. From the repo root, add and commit only the files listed in `docs/FILES_FOR_GIT.md`:
-
-```bash
-git init
-git add .gitignore README.md pyproject.toml pytest.ini requirements.txt
-git add scripts/
-git add cluster_pipeline/
-git add cluster_pipeline/
-git add docs/
-git add .github/
-git add tests/
-git status   # sanity check
-git commit -m "Add cluster completeness pipeline and ML training code"
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git branch -M main
-git push -u origin main
-```
-
-If you already have a repo with other files, use `git add -f <path>` for each path in `docs/FILES_FOR_GIT.md` and avoid `git add .` so you do not commit ignored data.
-
 ## License
 
 See repository or paper for license terms.
