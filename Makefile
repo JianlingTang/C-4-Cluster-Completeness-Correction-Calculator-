@@ -7,7 +7,7 @@ PYTEST  := $(VENV)/bin/pytest
 
 .PHONY: setup setup-quick test lint ci clean help
 
-help:  ## Show this help
+help:  ## Show this help info
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
 	  awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 
