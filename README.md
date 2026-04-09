@@ -71,28 +71,6 @@ python scripts/perform_ml_to_learn_completeness.py \
 
 Outputs: best model, scalers, and plots under `--out-dir`. Dependencies: `torch`, `numpy`, `scikit-learn`, `joblib`, `matplotlib` (no IRAF/BAOlab needed for this step).
 
-### 4. Deploy as Python package + API (no ML run)
-
-If you have the four checkpoint files (or put them on GitHub), you can skip training and run the API directly:
-
-1. **Put the four files** in one directory (e.g. repo `checkpoints/`):
-   - `best_model_phys_model0.pt`, `best_model_phot_model0.pt`
-   - `scaler_phys_model0.pkl`, `scaler_phot_model0.pkl`  
-   See `checkpoints/README.md`. You can commit these to GitHub so others don’t need to run ML.
-
-2. **Install and start API** (from repo root):
-   ```bash
-   pip install -e ".[api]"
-   deploy-completeness
-   ```
-   Or use a custom directory and one-shot install:
-   ```bash
-   python scripts/deploy.py --model-dir /path/to/your/checkpoints --install
-   ```
-
-   - API docs: http://localhost:8000/docs  
-   - Health: http://localhost:8000/health  
-
 ## Repository layout (code only)
 
 | Path | Description |
