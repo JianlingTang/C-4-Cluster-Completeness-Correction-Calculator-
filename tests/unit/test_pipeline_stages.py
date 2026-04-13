@@ -1,5 +1,4 @@
 """Unit tests for cluster_pipeline.pipeline.stages."""
-import pytest
 
 from cluster_pipeline.pipeline.stages import (
     LAST_STAGE,

@@ -88,14 +88,12 @@ def main():
     print(f"  Phase A total (synthetic_fits + coords):   {fmt(total_test_synth)}")
     print(f"  Phase B peak (synth + {args.n_workers} temp dirs):  {fmt(peak_phase_b_test)}")
     print()
-    print("  Extrapolation to {} clusters (nframe={}, nreff={}, {} jobs):".format(
-        total_clusters_target, nframe_full, n_reff_full, n_jobs_full))
+    print(f"  Extrapolation to {total_clusters_target} clusters (nframe={nframe_full}, nreff={n_reff_full}, {n_jobs_full} jobs):")
     total_synth_full = n_jobs_full * (size_fits + size_coords)
     print(f"  Phase A total:                             {fmt(total_synth_full)}")
     print(f"  Phase B peak (synth + {args.n_workers} workers):        {fmt(peak_phase_b_full)}")
     print()
-    print("  Recommendation: ensure at least {} free for a single-galaxy 300k run.".format(
-        fmt(peak_phase_b_full)))
+    print(f"  Recommendation: ensure at least {fmt(peak_phase_b_full)} free for a single-galaxy 300k run.")
     print("  Use --delete_synthetic_after_use to free synthetic FITS after each job;")
     print("  use --n_workers 20 to reduce peak temp dirs if needed.")
     print("=" * 60)

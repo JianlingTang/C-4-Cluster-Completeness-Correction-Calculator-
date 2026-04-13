@@ -99,7 +99,7 @@ def main():
         cmd.append("--run_photometry")
     result = subprocess.run(cmd, cwd=str(ROOT))
     if result.returncode != 0:
-        print("\nPipeline failed (exit {}). Storage report below may be partial or empty.".format(result.returncode))
+        print(f"\nPipeline failed (exit {result.returncode}). Storage report below may be partial or empty.")
     else:
         print("\nPipeline completed successfully.")
 
@@ -166,8 +166,7 @@ def main():
 
     # Step 4: Extrapolate to 300k
     print("\n" + "=" * 60)
-    print("Step 4: Extrapolation to {} clusters (nframe={}, nreff={}, {} jobs)".format(
-        args.extrapolate, NFRAME_300K, NREFF_FULL, n_jobs_300k))
+    print(f"Step 4: Extrapolation to {args.extrapolate} clusters (nframe={NFRAME_300K}, nreff={NREFF_FULL}, {n_jobs_300k} jobs)")
     print("=" * 60)
 
     if n_jobs == 0:
@@ -207,7 +206,7 @@ def main():
     print(f"  tmp_pipeline_test (peak)           {fmt(tmp_300k):>12}")
     print(f"  {'EST. TOTAL (300k clusters)':<45} {fmt(total_300k):>12}")
     print()
-    print("  Recommendation: ensure at least {} free for a single-galaxy 300k run.".format(fmt(total_300k)))
+    print(f"  Recommendation: ensure at least {fmt(total_300k)} free for a single-galaxy 300k run.")
     print("  Use --delete_synthetic_after_use and/or --n_workers 20 to reduce peak.")
     print("=" * 60)
     return 0 if result.returncode == 0 else 1
