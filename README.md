@@ -17,7 +17,7 @@ Pipeline for synthetic cluster injection, detection, matching, 5-filter photomet
 ## Installation
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/JianlingTang/C-4-Cluster-Completeness-Correction-Calculator-.git
 cd cluster-completeness-pipeline
 python -m venv .venv
 source .venv/bin/activate   # or .venv\Scripts\activate on Windows
